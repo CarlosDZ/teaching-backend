@@ -1,14 +1,18 @@
 import fs from 'fs';
-// import path from 'path';
+import path from 'path';
 // Middleware para loggear peticiones
 // Export permite importarlo en otros ficheros
 
 const logger = (req, res, next) => {
+    const log_dir = './logs';
+    const this_moment = new Date()
 
-    const string = `[${new Date().toISOString()}] ${req.method} - ${req.url} - ${req.socket.remoteAddress} `
+    const string = `[${this_moment.toISOString()}] ${req.method} - ${req.url} - ${req.socket.remoteAddress} `
     console.log(string);
+
+    const file = path.join(log_dir, this_moment.toISOString().split('T')[0]+".log")
     
-    fs.appendFile('./logs/requests.log', 
+    fs.appendFile(file, 
         string + '\n',
         (error) => {
             if (error) {
@@ -16,7 +20,6 @@ const logger = (req, res, next) => {
             }
         }
     );
-    
     next();
 }
 
