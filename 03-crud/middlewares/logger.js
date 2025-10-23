@@ -12,6 +12,11 @@ const logger = (req, res, next) => {
 
     const file = path.join(log_dir, this_moment.toISOString().split('T')[0]+".log")
     
+    if (!fs.existsSync(log_dir)) {
+        fs.mkdirSync(log_dir);
+    }
+
+
     fs.appendFile(file, 
         string + '\n',
         (error) => {
